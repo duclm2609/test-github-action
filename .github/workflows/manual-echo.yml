@@ -32,11 +32,15 @@ jobs:
             fi
                         
             # Clone the repository from develop branch
-            git clone -b develop "$REPO_URL"
+            git clone "$REPO_URL"
             cd "$REPO_NAME"
 
             # Make the command file executable if it exists
             PGDATABASE=${{ secrets.PG_DATABASE }} PGHOST=${{ secrets.PG_HOST }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} psql -f scripts/loader/dld_schema.sql
+
+            # Load data into database
+            echo "Loading data into database..."
+            PGDATABASE=${{ secrets.PG_DATABASE }} PGHOST=${{ secrets.PG_HOST }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} scripts/loader/load_csv.sh /opt/fractional/csv
 
           EOF
         
