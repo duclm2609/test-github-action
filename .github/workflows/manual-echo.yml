@@ -30,10 +30,14 @@ jobs:
             if [ -d "$REPO_NAME" ]; then
               rm -rf "$REPO_NAME"
             fi
-            
-            # Clone the repository
-            git clone "$REPO_URL"
+                        
+            # Clone the repository from develop branch
+            git clone -b develop "$REPO_URL"
             cd "$REPO_NAME"
+
+            # Make the command file executable if it exists
+            PGDATABASE=${{ secrets.PG_DATABASE }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} psql -f scripts/loader/dld_schema.sql
+
           EOF
         
       - name: Cleanup SSH key
