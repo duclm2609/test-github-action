@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  echo_job:
+  load_csv:
     runs-on: ubuntu-latest
     steps:
       - name: Setup SSH key
