@@ -34,10 +34,9 @@ jobs:
             # Clone the repository
             git clone "$REPO_URL"
             cd "$REPO_NAME"
-            
           EOF
         
-        - name: Cleanup SSH key
-          if: always()
-          run: |
-            rm -f ~/.ssh/id_rsa
+      - name: Cleanup SSH key
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa
