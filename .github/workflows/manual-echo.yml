@@ -36,7 +36,7 @@ jobs:
             cd "$REPO_NAME"
 
             # Make the command file executable if it exists
-            PGDATABASE=${{ secrets.PG_DATABASE }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} psql -f scripts/loader/dld_schema.sql
+            PGDATABASE=${{ secrets.PG_DATABASE }} PGHOST=${{ secrets.PG_HOST }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} psql -f scripts/loader/dld_schema.sql
 
           EOF
         
