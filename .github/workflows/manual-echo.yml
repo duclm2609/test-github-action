@@ -27,7 +27,7 @@ jobs:
       - name: Load CSV files to database
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            # Set variables
+            chmod +x ~/scripts/loader/load_csv.sh
 
             # Make the command file executable if it exists
             PGDATABASE=${{ secrets.PG_DATABASE }} PGHOST=${{ secrets.PG_HOST }} PGPORT=${{ secrets.PG_PORT }} PGUSER=${{ secrets.PG_USER }} PGPASSWORD=${{ secrets.PG_PASSWORD }} psql -f ~/scripts/loader/dld_schema.sql
