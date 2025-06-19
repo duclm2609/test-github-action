@@ -7,5 +7,37 @@ jobs:
   echo_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo Hello World
-        run: echo "Hello, World!"
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            # Set variables
+            REPO_URL="${{ secrets.REPO_URL }}"
+            REPO_NAME=$(basename "$REPO_URL" .git)
+            DEPLOY_DIR="/home/${{ secrets.EC2_USER }}/deployments"
+            
+            # Create deployment directory if it doesn't exist
+            mkdir -p "$DEPLOY_DIR"
+            cd "$DEPLOY_DIR"
+            
+            # Remove existing repo if it exists and clone fresh
+            if [ -d "$REPO_NAME" ]; then
+              rm -rf "$REPO_NAME"
+            fi
+            
+            # Clone the repository
+            git clone "$REPO_URL"
+            cd "$REPO_NAME"
+            
+          EOF
+        
+        - name: Cleanup SSH key
+          if: always()
+          run: |
+            rm -f ~/.ssh/id_rsa
