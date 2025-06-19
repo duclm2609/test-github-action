@@ -20,8 +20,8 @@ jobs:
       - name: Copy script to EC2
         run: |
           # Copy the command file to EC2 instance
-          scp -i ~/.ssh/id_rsa scripts/loader/dld_schema.sql ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/scripts
-          scp -i ~/.ssh/id_rsa scripts/loader/load_csv.sh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/scripts
+          scp -i ~/.ssh/id_rsa scripts/loader/dld_schema.sql ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/scripts/loader/dld_schema.sql
+          scp -i ~/.ssh/id_rsa scripts/loader/load_csv.sh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/scripts/loader/load_csv.sh
 
       - name: Deploy to EC2
         run: |
